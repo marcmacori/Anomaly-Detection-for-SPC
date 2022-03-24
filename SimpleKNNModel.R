@@ -1,6 +1,13 @@
 # Load class package
-library(class)
-library(caret)
+if(!require(class)) {
+  install.packages(class)
+  library(class)
+}
+if(!require(caret)) {
+  install.packages(caret)
+  library(caret)
+}
+ 
 #Import data
 SC <- read.table("C:/Users/Marc/Desktop/TFG/Data/synthetic_control.data", quote="\"", comment.char="")
 SC <- transpose(SC)
