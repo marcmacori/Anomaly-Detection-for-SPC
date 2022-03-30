@@ -1,4 +1,5 @@
 #Synthetic Control Chart Creator
+#Organize input, with variable input depending on the type of anomaly pattern 
 
 #Basic Pattern Creation
 normal<-function(mu,sigma,numobs){
@@ -56,18 +57,30 @@ DataCreation<-function(mu,sigma,anstart,anend,typeanomaly){
   if ( typeanomaly=="cyclic") {
     return(c(normal(mu,sigma,anstart),cyclic(mu,sigma,anend-anstart)))
   } else if ( typeanomaly=="systematic") {
-    return(c(normal(mu,sigma,anstart),systematic(mu,sigma,anend-anstart)))
+      return(c(normal(mu,sigma,anstart),systematic(mu,sigma,anend-anstart)))
   } else if ( typeanomaly=="stratification") {
-    return(c(normal(mu,sigma,anstart),stratification(mu,sigma,anend-anstart)))
+      return(c(normal(mu,sigma,anstart),stratification(mu,sigma,anend-anstart)))
   } else if ( typeanomaly=="ut") {
-    return(c(normal(mu,sigma,anstart),ut(mu,sigma,anend-anstart)))
+      return(c(normal(mu,sigma,anstart),ut(mu,sigma,anend-anstart)))
   } else if ( typeanomaly=="dt") {
-    return(c(normal(mu,sigma,anstart),dt(mu,sigma,anend-anstart)))
+      return(c(normal(mu,sigma,anstart),dt(mu,sigma,anend-anstart)))
   } else if ( typeanomaly=="us") {
-    return(c(normal(mu,sigma,anstart),us(mu,sigma,anend-anstart)))
+      return(c(normal(mu,sigma,anstart),us(mu,sigma,anend-anstart)))
   } else if ( typeanomaly=="ds") {
-    return(c(normal(mu,sigma,anstart),ds(mu,sigma,anend-anstart)))
+      return(c(normal(mu,sigma,anstart),ds(mu,sigma,anend-anstart)))
   }
+}
+
+#Creating in-control data set to extract statistical features and create model
+TrainingSetCreation<-function(mu,sigma,numobs,size){
+  i<-1
+  df <- data.frame(normal(mu,sigma,numobs))
+  
+  for (i in seq(2,size,by=1)){
+    df<- cbind(df, normal(mu,sigma,numobs))
+  }
+  colnames(df)<-paste("col", 1:size, sep = "")
+  return(df)
 }
 
 
