@@ -74,13 +74,19 @@ DataCreation<-function(mu,sigma,anstart,anend,typeanomaly){
 #Creating in-control data set to extract statistical features and create model
 TrainingSetCreation<-function(mu,sigma,numobs,size){
   i<-1
-  df <- data.frame(normal(mu,sigma,numobs))
+  
+  df <- data.frame(t(normal(mu,sigma,numobs)))
   
   for (i in seq(2,size,by=1)){
-    df<- cbind(df, normal(mu,sigma,numobs))
+    df<- rbind(df, data.frame(t(normal(mu,sigma,numobs))))
   }
-  colnames(df)<-paste("col", 1:size, sep = "")
+  
+  colnames(df)<-paste("Sample", 1:numobs, sep = "")
+  rownames(df)<-(paste("ChartNumber", 1:size, sep = ""))
+  
   return(df)
 }
+
+
 
 
