@@ -41,7 +41,7 @@ dt<-function(mu,sigma,numobs){
 #P: moment of shift
 #s: amplitude of shift
 us<-function(mu,sigma,numobs){
-  return(mu+sigma*rnorm(numobs,0,1)+(runif(numobs,10,20)<=seq(1,numobs,by=1))*runif(numobs,1*sigma,3*sigma))
+  return(mu+sigma*rnorm(numobs,0,1)+(runif(numobs,10,20)<=seq(1,numobs,by=1))*runif(1,1*sigma,3*sigma))
 }
 
 #Equation: y(t)=mu+r(t)*sigma-k*s
@@ -49,7 +49,7 @@ us<-function(mu,sigma,numobs){
 #P: moment of shift
 #s: amplitude of shift
 ds<-function(mu,sigma,numobs){
-  return(mu+sigma*rnorm(numobs,0,1)-(runif(numobs,10,20)<=seq(1,numobs,by=1))*runif(numobs,1*sigma,3*sigma))
+  return(mu+sigma*rnorm(numobs,0,1)-(runif(numobs,10,20)<=seq(1,numobs,by=1))*runif(1,1*sigma,3*sigma))
 }
 
 #Joining Normal + Anomaly at a given point
