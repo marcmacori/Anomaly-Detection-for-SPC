@@ -12,6 +12,6 @@ lstm_model %>%
              stateful = TRUE) %>%
   layer_dropout(rate = 0.5) %>%
   time_distributed(keras::layer_dense(units = 1)) %>%
-  compile(loss = 'mae', optimizer = 'adam', metrics = 'accuracy')
+  compile(loss = "mae", optimizer = "adam", metrics = "accuracy")
 
 summary(lstm_model)
