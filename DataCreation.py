@@ -5,7 +5,7 @@ import pandas as pd
 # Basic pattern definitions:
 
 def normal(mu, sigma, numobs):
-    return(np.random.normal(loc = mu, scale = sigma, size = (numobs)))
+    return(mu + sigma * np.random.normal(size = (numobs)))
 
 # Equation: y(t)=mu+r(t)*sigma+a*sin(2*pi*t/T)
 # r(t): inevitable accidental fluctuation with Gaussian distribution
@@ -20,26 +20,26 @@ def cyclic(mu, sigma, numobs):
 # Equation: y(t)=mu+r(t)*sigma+d*(-1)^t
 # d: degree of state departure
 def systematic(mu, sigma, numobs):
-    return(np.random.normal(loc = mu, scale = sigma, size = (numobs))\
+    return(mu + sigma * np.random.normal(size = (numobs))\
         + np.random.uniform(1 * sigma, 3 * sigma, size\
         = (numobs)) * (-1) ** np.arange(1, numobs + 1))
 
 # Equation: y(t)=mu+r(t)*sigma*[0.2;0.4]
 def stratified(mu, sigma, numobs):
-    return(np.random.normal(loc = mu, scale = sigma, size = (numobs))\
+    return(mu + sigma * np.random.normal(size = (numobs))\
         * np.random.uniform(0.2 * sigma, 0.4 * sigma, size = (numobs)))
 
 # Equation: y(t)=mu+r(t)*sigma+t*g
 # g: gradient of upward trend
 def ut(mu, sigma, numobs):
-    return(np.random.normal(loc = mu, scale = sigma, size = (numobs))\
+    return(mu + sigma * np.random.normal(size = (numobs))\
         + np.arange(1, numobs + 1)\
         * np.random.uniform(0.05 * sigma, 0.25 * sigma, size = (numobs)))
 
 # Equation: y(t)=mu+r(t)*sigma-t*g
 # g: gradient of downward trend
 def dt(mu, sigma, numobs):
-    return(np.random.normal(loc = mu, scale = sigma, size = (numobs))\
+    return( mu + sigma * np.random.normal(size = (numobs))\
         - np.arange(1, numobs + 1)\
         * np.random.uniform(0.05 * sigma, 0.25 * sigma, size = (numobs)))
 
@@ -50,7 +50,7 @@ def dt(mu, sigma, numobs):
 def us(mu, sigma, numobs, start):
     a = start <= np.arange(1, numobs + 1)
     b = np.random.uniform(1 * sigma, 3 * sigma, size = (1, 1))
-    return(np.random.normal(loc = mu, scale = sigma, size = (numobs))\
+    return(mu + sigma * np.random.normal(size = (numobs))\
         + a * b)
 
 # Equation: y(t)=mu+r(t)*sigma-k*s
@@ -60,7 +60,7 @@ def us(mu, sigma, numobs, start):
 def ds(mu, sigma, numobs, start):
     a = start <= np.arange(1, numobs + 1)
     b = np.random.uniform(1 * sigma, 3 * sigma, size = (1, 1))
-    return(np.random.normal(loc = mu, scale = sigma, size = (numobs))\
+    return(mu + sigma * np.random.normal(size = (numobs))\
         - a * b)
 
 # Joining anomly pattern with normal pattern in specific zones
@@ -173,7 +173,7 @@ def DataSet2Creation(len):
         h = [np.reshape(us(mu, sg, lono, 1), (lono,)), un]
         i = [np.reshape(ds(mu, sg, lono, 1), (lono,)), un]
 
-        rand = np.random.permutation([b, b, b, c, d, e, f, g, h, i])
+        rand = np.random.permutation([b, b, b, b, b, c, d, e, f, g, h, i])
         Xs = np.concatenate((Xs, rand[0, 0]))
         Ys = np.concatenate((Ys, rand[0, 1]))
 
