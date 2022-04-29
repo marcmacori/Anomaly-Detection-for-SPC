@@ -15,7 +15,7 @@ def cyclic(mu, sigma, numobs):
     return(mu + sigma * np.random.normal(size = (numobs))\
         + np.random.uniform(1.5 * sigma, 2.5 * sigma, size\
         = (numobs)) * np.sin( 2 * np.arange(1, numobs + 1)\
-         * np.pi / 16))
+         * np.pi / np.random.uniform(8, 32)))
 
 # Equation: y(t)=mu+r(t)*sigma+d*(-1)^t
 # d: degree of state departure
@@ -34,7 +34,7 @@ def stratified(mu, sigma, numobs):
 def ut(mu, sigma, numobs):
     return(mu + sigma * np.random.normal(size = (numobs))\
         + np.arange(1, numobs + 1)\
-        * np.random.uniform(0.05 * sigma, 0.25 * sigma, size = (numobs)))
+        * np.random.uniform(0.025 * sigma, 0.15 * sigma, size = (numobs)))
 
 # Equation: y(t)=mu+r(t)*sigma-t*g
 # g: gradient of downward trend
@@ -82,12 +82,18 @@ def TSwithAnomaly(mu, sigma, numobs, anstart, anend, type):
             , dt(mu, sigma, anend - anstart), normal(mu, sigma, numobs - anend)))
     return(a)
 
-# creation of standard dataset: 280 time series with anomalies starting from point 20 and 
+# creation of standard dataset: 40 time series with no anomalies and 
+# 280 time series with anomalies starting from point 20 and 
 # starting with a 1 position delay for each new time series up until 60. 
 # This is repeated for each type of anomaly. All points are labeled as in a corresponding matrix
 # O corresponding to non-anomaly and 1 correspoding to anomaly
 def DataSetCreation(mu, sigma, numobs):
     Xs, Ys = [], [],
+    for i in range(40):
+        X = normal(mu, sigma, numobs)
+        Y = np.zeros(numobs)
+        Xs.append(X)
+        Ys.append(Y)
     for i in range(40):
         X = TSwithAnomaly(mu, sigma, numobs, 20+i, numobs, "cyclic")
         Y = np.concatenate((np.zeros(20+i), np.ones(40-i)))
@@ -143,24 +149,24 @@ Df1_Classification=pd.DataFrame(DataSet1_Classification)
 Df1.to_csv('TimeSeries1.csv')
 Df1_Classification.to_csv('TimeSeries1_Classification.csv')
 
-# Creating Dataset number 2. A multifeature dataset, with 2800 points and anomalies
-# starting from point 1000. Each point is labeled as an anomaly or not in a 
+# Creating Dataset number 2. A multifeature dataset, with 90000 points and anomalies
+# starting from point 45000. Each point is labeled as an anomaly or not in a 
 # correspoinding vector with the same logic as above
 def DataSet2Creation(len):
     
     mu = np.random.uniform(1, 50, size=1)
     sg = np.random.uniform(mu/20, mu/5, size=1)
-    zmil = np.zeros(1000)
+    zin = np.zeros(45000)
 
-    a = [normal(mu, sg, 1000), zmil]
+    a = [normal(mu, sg, 45000), zin]
 
     Xs = a[0]
     Ys = a[1]
 
     while (Ys.shape[0] < len):
         
-        lonn = np.random.randint(5, 200)
-        lono = np.random.randint(5, 200)
+        lonn = np.random.randint(200, 2000)
+        lono = np.random.randint(200, 2000)
         z = np.zeros(lonn)
         un = np.ones(lono)
 
@@ -186,11 +192,11 @@ def DataSet2Creation(len):
 
     return np.array(Xs), np.array(Ys)
 
-a, b = DataSet2Creation(2800)
-c, d = DataSet2Creation(2800)
-e, f = DataSet2Creation(2800)
-g, h = DataSet2Creation(2800)
-i, j = DataSet2Creation(2800)
+a, b = DataSet2Creation(90000)
+c, d = DataSet2Creation(90000)
+e, f = DataSet2Creation(90000)
+g, h = DataSet2Creation(90000)
+i, j = DataSet2Creation(90000)
 
 # Final dataset
 # Creating a dataframe and saving .csv

@@ -1,0 +1,36 @@
+#Libraries
+import numpy as np
+import pandas as pd 
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import IsolationForest
+
+#Pre-processing
+#Import and split data
+TS1 = pd.read_csv("TimeSeries1.csv", index_col = 0)
+X_train = TS1.iloc[0:960, :]
+X_test = TS1.iloc[960:1600, :]
+
+#Standardize data based on first 20 points of chart, which is supposed in control
+def stdvector(data):
+    data = np.array(data)
+    a = []
+    for i in range(len(data)):
+        v = data[i, 0:20]
+        scaler = StandardScaler()
+        scaler = scaler.fit(v.reshape(-1,1))
+        scaled = scaler.transform(data[i, :].reshape(-1,1))
+        a.append(scaled)
+    return(np.array(a).reshape(np.shape(data)))
+        
+
+X_train = stdvector(X_train)  
+X_test = stdvector(X_test)
+
+
+#Creating sliding windows for each TS and finding their mean and sigma
+def sw_dataset(X, time_steps = 20):
+  a = [], []
+  for i in range(len(X) - time_steps):
+     v = X.iloc[i:(i + time_steps)].values
+     a.append(v)
+  return np.array(a)

@@ -36,16 +36,15 @@ V4 <- c(125, 130, 135,140)
 V5 <- c(165, 170, 175, 170)
 V6 <- c(205, 210, 215, 220)
 V7 <- c(245, 250, 255, 260)
+V8 <- c(285, 290, 295, 300)
 
 
 plot_series <- function(Data, Class, V)
 {
   time <- 1:60
   plot_list <- list()
-  for (i in 1:length(V))
-    {
-    plot_list[[i]] <- local(
-      {
+  for (i in 1:length(V)){
+    plot_list[[i]] <- local({
       i <- i
       p <- ggplot(data = Data, mapping = aes(x = time, y = Data[, V[i]]))
       p <- p + geom_line(alpha = 0.3) +
@@ -65,16 +64,33 @@ p1 <- c(plot_series(TS1, TS1_Class, V1),
         plot_series(TS1, TS1_Class, V4),
         plot_series(TS1, TS1_Class, V5),
         plot_series(TS1, TS1_Class, V6),
-        plot_series(TS1, TS1_Class, V7))
+        plot_series(TS1, TS1_Class, V7),
+        plot_series(TS1, TS1_Class, V8))
 
 Data1 <- wrap_plots(p1, ncol = 4) + plot_layout(guides = "collect")
 
-#Dataset2 Visualization
+#Dataset1 with WE anomalies visualization
+
+WE_TS1_Class <- read.csv(file = "TimeSeries1_WE_Classification.csv",
+                        header = TRUE, row.names = 1)
+
+p12 <- c(plot_series(TS1, WE_TS1_Class, V1),
+        plot_series(TS1, WE_TS1_Class, V2),
+        plot_series(TS1, WE_TS1_Class, V3),
+        plot_series(TS1, WE_TS1_Class, V4),
+        plot_series(TS1, WE_TS1_Class, V5),
+        plot_series(TS1, WE_TS1_Class, V6),
+        plot_series(TS1, WE_TS1_Class, V7),
+        plot_series(TS1, WE_TS1_Class, V8))
+
+Data12 <- wrap_plots(p12, ncol = 4) + plot_layout(guides = "collect")
+
+#Dataset2 visualization
 
 TimeSeries2 <- read.csv(file = "TimeSeries2.csv",
                         header = TRUE, row.names = 1)
 
-time <- 1:2800
+time <- 1:90000
 
 plot1 <- ggplot(data = TimeSeries2, mapping = aes(x = time, y = F1))
 plot1 <- plot1 + geom_line(alpha = 0.3) +
@@ -111,5 +127,50 @@ A#B#C
 #D#E#
 "
 Data2 <- wrap_plots(plot1, plot2, plot3, plot4, plot5, ncol = 3, nrow = 2,
+                    design = layout) +
+  plot_layout(guides = "collect")
+
+#Dataset2 with WE anomalies visualization
+
+WE_TS2_Class <- read.csv(file = "TimeSeries2_WE_Classification.csv",
+                         header = TRUE, row.names = 1)
+time <- 1:90000
+
+plot12 <- ggplot(data = TimeSeries2, mapping = aes(x = time, y = F1))
+plot12 <- plot12 + geom_line(alpha = 0.3) +
+  geom_point(data = WE_TS2_Class, mapping = aes(x = time, y = WE_TS2_Class[,1],
+                                                color = as.factor(WE_TS2_Class[,1]))) +
+  scale_color_discrete(name = "Classification", labels = c("IC", "OC")) +
+  theme_classic()
+
+plot22 <- ggplot(data = TimeSeries2, mapping = aes(x = time, y = F2))
+plot22 <- plot22 + geom_line(alpha = 0.3) +
+  geom_point(data = WE_TS2_Class, mapping = aes(x = time, y = WE_TS2_Class[,2],
+                                                color = as.factor(WE_TS2_Class[,2]))) +
+  scale_color_discrete(name = "Classification", labels = c("IC", "OC")) +
+  theme_classic()
+
+plot32 <- ggplot(data = TimeSeries2, mapping = aes(x = time, y = F3))
+plot32 <- plot32 + geom_line(alpha = 0.3) +
+  geom_point(data = WE_TS2_Class, mapping = aes(x = time, y = WE_TS2_Class[,3],
+                                                color = as.factor(WE_TS2_Class[,3]))) +
+  scale_color_discrete(name = "Classification", labels = c("IC", "OC")) +
+  theme_classic()
+
+plot42 <- ggplot(data = TimeSeries2, mapping = aes(x = time, y = F4))
+plot42 <- plot12 + geom_line(alpha = 0.3) +
+  geom_point(data = WE_TS2_Class, mapping = aes(x = time, y = WE_TS2_Class[,4],
+                                                color = as.factor(WE_TS2_Class[,4]))) +
+  scale_color_discrete(name = "Classification", labels = c("IC", "OC")) +
+  theme_classic()
+
+plot52 <- ggplot(data = TimeSeries2, mapping = aes(x = time, y = F5))
+plot52 <- plot12 + geom_line(alpha = 0.3) +
+  geom_point(data = WE_TS2_Class, mapping = aes(x = time, y = WE_TS2_Class[,5],
+                                                color = as.factor(WE_TS2_Class[,5]))) +
+  scale_color_discrete(name = "Classification", labels = c("IC", "OC")) +
+  theme_classic()
+
+Data22 <- wrap_plots(plot12, plot22, plot32, plot42, plot52, ncol = 3, nrow = 2,
                     design = layout) +
   plot_layout(guides = "collect")
