@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd 
 
 # Basic pattern definitions:
-
 def normal(mu, sigma, numobs):
     return(mu + sigma * np.random.normal(size = (numobs)))
 
@@ -156,17 +155,17 @@ def DataSet2Creation(len):
     
     mu = np.random.uniform(1, 50, size=1)
     sg = np.random.uniform(mu/20, mu/5, size=1)
-    zin = np.zeros(45000)
+    zin = np.zeros(2000)
 
-    a = [normal(mu, sg, 45000), zin]
+    a = [normal(mu, sg, 2000), zin]
 
     Xs = a[0]
     Ys = a[1]
 
     while (Ys.shape[0] < len):
         
-        lonn = np.random.randint(200, 2000)
-        lono = np.random.randint(200, 2000)
+        lonn = np.random.randint(200, 500)
+        lono = np.random.randint(200, 500)
         z = np.zeros(lonn)
         un = np.ones(lono)
 
@@ -192,11 +191,11 @@ def DataSet2Creation(len):
 
     return np.array(Xs), np.array(Ys)
 
-a, b = DataSet2Creation(90000)
-c, d = DataSet2Creation(90000)
-e, f = DataSet2Creation(90000)
-g, h = DataSet2Creation(90000)
-i, j = DataSet2Creation(90000)
+a, b = DataSet2Creation(10000)
+c, d = DataSet2Creation(10000)
+e, f = DataSet2Creation(10000)
+g, h = DataSet2Creation(10000)
+i, j = DataSet2Creation(10000)
 
 # Final dataset
 # Creating a dataframe and saving .csv
