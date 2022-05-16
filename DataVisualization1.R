@@ -64,16 +64,34 @@ Data1 <- wrap_plots(p1, ncol = 4) + plot_layout(guides = "collect")
 
 #Dataset1 with WE anomalies visualization
 
-WE_TS1_Class <- read.csv(file = "TimeSeries1_WE_Classification.csv",
+NE_TS1_Class <- read.csv(file = "TimeSeries1_Nelson_Classification.csv",
                         header = TRUE, row.names = 1)
+NE_TS1_Class <- as.data.frame(t(NE_TS1_Class))
 
-p12 <- c(plot_series(TS1, WE_TS1_Class, V1),
-        plot_series(TS1, WE_TS1_Class, V2),
-        plot_series(TS1, WE_TS1_Class, V3),
-        plot_series(TS1, WE_TS1_Class, V4),
-        plot_series(TS1, WE_TS1_Class, V5),
-        plot_series(TS1, WE_TS1_Class, V6),
-        plot_series(TS1, WE_TS1_Class, V7),
-        plot_series(TS1, WE_TS1_Class, V8))
+p12 <- c(plot_series(TS1, NE_TS1_Class, V1),
+        plot_series(TS1, NE_TS1_Class, V2),
+        plot_series(TS1, NE_TS1_Class, V3),
+        plot_series(TS1, NE_TS1_Class, V4),
+        plot_series(TS1, NE_TS1_Class, V5),
+        plot_series(TS1, NE_TS1_Class, V6),
+        plot_series(TS1, NE_TS1_Class, V7),
+        plot_series(TS1, NE_TS1_Class, V8))
 
 Data12 <- wrap_plots(p12, ncol = 4) + plot_layout(guides = "collect")
+
+#Dataset1 with WE anomalies visualization
+
+WE_TS1_Class <- read.csv(file = "TimeSeries1_WE_Classification.csv",
+                         header = TRUE, row.names = 1)
+WE_TS1_Class <- as.data.frame(t(WE_TS1_Class))
+
+p13 <- c(plot_series(TS1, WE_TS1_Class, V1),
+         plot_series(TS1, WE_TS1_Class, V2),
+         plot_series(TS1, WE_TS1_Class, V3),
+         plot_series(TS1, WE_TS1_Class, V4),
+         plot_series(TS1, WE_TS1_Class, V5),
+         plot_series(TS1, WE_TS1_Class, V6),
+         plot_series(TS1, WE_TS1_Class, V7),
+         plot_series(TS1, NE_TS1_Class, V8))
+
+Data13 <- wrap_plots(p12, ncol = 4) + plot_layout(guides = "collect")

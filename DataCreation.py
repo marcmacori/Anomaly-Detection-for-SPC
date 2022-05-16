@@ -128,7 +128,7 @@ def DataSetCreation(mu, sigma, numobs):
         Y = np.concatenate((np.zeros(20+i), np.ones(40-i)))
         Xs.append(np.reshape(X, (60,)))
         Ys.append(Y)
-    return np.array(Xs), np.array(Ys) 
+    return np.array(Xs), np.array(Ys).astype(int) 
 
 # Repeating the process to have 5 time series where the anomaly starts in the same position
 TS1, TS_Classification1 = DataSetCreation(10, 1, 60)
@@ -147,6 +147,24 @@ Df1= pd.DataFrame(DataSet1)
 Df1_Classification=pd.DataFrame(DataSet1_Classification)
 Df1.to_csv('TimeSeries1.csv')
 Df1_Classification.to_csv('TimeSeries1_Classification.csv')
+
+
+#Creating a normal dataset for semi-supervised training
+def NormalDataSetCreation(mu, sigma, numobs):
+    Xs, Ys = [], [],
+    for i in range(1000):
+        X = normal(mu, sigma, numobs)
+        Y = np.zeros(numobs)
+        Xs.append(X)
+        Ys.append(Y)
+    return np.array(Xs), np.array(Ys) 
+
+TS1, TS_Classification1 = NormalDataSetCreation(10, 1, 60)
+
+# Creating a dataframe and saving .csv
+Df1= pd.DataFrame(TS1)
+Df1.to_csv('TimeSeriesNormal.csv')
+
 
 # Creating Dataset number 2. A multifeature dataset, with 90000 points and anomalies
 # starting from point 45000. Each point is labeled as an anomaly or not in a 
