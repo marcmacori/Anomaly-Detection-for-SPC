@@ -49,7 +49,8 @@ plot_series <- function(Data, Class, V)
                            labels = c("IC", "OOC"))+
         theme_classic()+
         labs(y = "QC", x = "Obeservation Number")+
-        theme(text = element_text(size=8))
+        theme(text = element_text(size=8))+
+        coord_cartesian(xlim = c(0, 60), ylim = c(5, 15))
       })
     }
   return(plot_list)
@@ -66,7 +67,7 @@ p1 <- c(plot_series(TS1, TS1_Class, V1),
 
 Data1 <- wrap_plots(p1, ncol = 4) + plot_layout(guides = "collect")
 
-#Dataset1 with WE anomalies visualization
+#Dataset1 with Nelson anomalies visualization
 
 NE_TS1_Class <- read.csv(file = "Data\\TimeSeries1_Nelson_Classification.csv",
                         header = TRUE, row.names = 1)

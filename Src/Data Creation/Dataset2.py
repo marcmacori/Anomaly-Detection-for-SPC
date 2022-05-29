@@ -2,8 +2,8 @@
 import numpy as np
 import pandas as pd 
 from DataCreation import *
-# Creating Dataset number 2. A multifeature dataset, with 90000 points and anomalies
-# starting from point 45000. Each point is labeled as an anomaly or not in a 
+# Creating Dataset number 2. A multifeature dataset, with 10000 points and anomalies
+# starting from point 2000. Each point is labeled as an anomaly or not in a 
 # correspoinding vector with the same logic as above
 def DataSet2Creation(len):
     

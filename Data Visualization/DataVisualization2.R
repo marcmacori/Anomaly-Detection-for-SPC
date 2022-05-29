@@ -15,10 +15,10 @@ if (!require("patchwork")) {
 
 #Dataset2 visualization
 
-TimeSeries2 <- read.csv(file = "TimeSeries2.csv",
+TimeSeries2 <- read.csv(file = "Data\\TimeSeries2.csv",
                         header = TRUE, row.names = 1)
 
-time <- 1:90000
+time <- 1:10000
 
 plot1 <- ggplot(data = TimeSeries2, mapping = aes(x = time, y = F1))
 plot1 <- plot1 + geom_line(alpha = 0.3) +
@@ -62,7 +62,6 @@ Data2 <- wrap_plots(plot1, plot2, plot3, plot4, plot5, ncol = 3, nrow = 2,
 
 WE_TS2_Class <- read.csv(file = "TimeSeries2_WE_Classification.csv",
                          header = TRUE, row.names = 1)
-time <- 1:90000
 
 plot12 <- ggplot(data = TimeSeries2, mapping = aes(x = time, y = F1))
 plot12 <- plot12 + geom_line(alpha = 0.3) +
