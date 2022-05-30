@@ -5,7 +5,8 @@ from sklearnex import patch_sklearn
 patch_sklearn()
 from sklearn.preprocessing import StandardScaler
 from sklearn import svm
-from sklearn.model_selection import RandomizedSearchCV, KFold 
+from sklearn.experimental import enable_halving_search_cv
+from sklearn.model_selection import HalvingGridSearchCV, KFold 
 from sklearn.metrics import f1_score, make_scorer, accuracy_score, precision_score, recall_score, average_precision_score
 import joblib
 import sys
@@ -65,25 +66,28 @@ svm_3 = svm.SVC()
 
 #Cross validation and hyperparameter tuning
 cv = KFold(n_splits = 5, shuffle=True,  random_state = 123)
-sc = {"PR_AUC_score": make_scorer(average_precision_score), "Accuracy": make_scorer(accuracy_score), "Precision": make_scorer(precision_score),\
-     "Recall": make_scorer(recall_score), "F1": make_scorer(f1_score)}
+sc = make_scorer(f1_score)
 
-svm_1_eval = RandomizedSearchCV(svm_1, parameters, cv = cv, verbose = 4, scoring = sc, refit="PR_AUC_score",)
+svm_1_eval = HalvingGridSearchCV(svm_1, parameters, cv = cv, verbose = 4, scoring = sc,random_state = 0)
 svm_1_tuning = svm_1_eval.fit(np.array(X_train1), X_labels)
 svm_1 = svm_1_tuning.best_estimator_
 score_svm1 = svm_1_tuning.cv_results_
 
-svm_2_eval = RandomizedSearchCV(svm_2, parameters, cv = cv, verbose = 4, scoring = sc, refit="PR_AUC_score",)
+svm_2_eval = HalvingGridSearchCV(svm_2, parameters, cv = cv, verbose = 4, scoring = sc,random_state = 0)
 svm_2_tuning = svm_2_eval.fit(np.array(X_train2), X_labels)
 svm_2 = svm_2_tuning.best_estimator_
 score_svm2 = svm_2_tuning.cv_results_
 
-svm_3_eval = RandomizedSearchCV(svm_3, parameters, cv = cv, verbose = 4, scoring = sc, refit="PR_AUC_score",)
+svm_3_eval = HalvingGridSearchCV(svm_3, parameters, cv = cv, verbose = 4, scoring = sc,random_state = 0)
 svm_3_tuning = svm_3_eval.fit(np.array(X_train3), X_labels)
 svm_3 = svm_3_tuning.best_estimator_
 score_svm3 = svm_3_tuning.cv_results_
 
-# save the model to disk
-joblib.dump(svm_1, 'Models\ML_svm_1.sav')
-joblib.dump(svm_2, 'Models\\ML_svm_2.sav')
-joblib.dump(svm_3, 'Models\ML_svm_3.sav')
+# save the model and tuning to to PC
+joblib.dump(svm_1, 'ML_Models\ML_svm_1.sav')
+joblib.dump(svm_2, 'ML_Models\\ML_svm_2.sav')
+joblib.dump(svm_3, 'ML_Models\ML_svm_3.sav')
+
+joblib.dump(svm_1_tuning, 'ML_Models\ML_svm_1_tuning.pkl')
+joblib.dump(svm_2_tuning, 'ML_Models\\ML_svm_2_tuning.pkl')
+joblib.dump(svm_3_tuning, 'ML_Models\ML_svm_3.pkl')

@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd 
 from sklearn.ensemble import IsolationForest
 from sklearn.model_selection import RandomizedSearchCV, KFold
-from sklearn.metrics import f1_score, make_scorer, accuracy_score, precision_score, recall_score, average_precision_score
+from sklearn.metrics import f1_score, make_scorer, precision_score, recall_score, average_precision_score
 import joblib
 import sys
 sys.path.append('C:/Users/Marc/Desktop/TFG/R Files/Anomaly Detection for SPC')
@@ -75,24 +75,24 @@ grid = {'bootstrap': bootstrap,
                 'n_jobs': n_jobs}
 
 cv = KFold(n_splits = 5, shuffle=True,  random_state = 123)
-sc = {"PR_AUC_score": make_scorer(average_precision_score), "Accuracy": make_scorer(accuracy_score), "Precision": make_scorer(precision_score),\
+sc = {"PR_AUC_score": make_scorer(average_precision_score), "Precision": make_scorer(precision_score),\
      "Recall": make_scorer(recall_score), "F1": make_scorer(f1_score)}
 
 
 iforest_1_eval = RandomizedSearchCV(iforest_1, grid, cv = cv, verbose = 4, random_state=0,\
-     scoring = sc, n_iter = 10, refit="PR_AUC_score", n_jobs=2)
+     scoring = sc, n_iter = 10, refit="F1", n_jobs=2)
 iforest_1_tuning = iforest_1_eval.fit(np.array(X_train1), X_labels)
 iforest_1 = iforest_1_tuning.best_estimator_
 score_iforest1 = iforest_1_tuning.cv_results_
 
 iforest_2_eval = RandomizedSearchCV(iforest_2, grid, cv = cv, verbose = 4, random_state=0,\
-     scoring = sc, n_iter = 10, refit="PR_AUC_score", n_jobs=2)
+     scoring = sc, n_iter = 10, refit="F1", n_jobs=2)
 iforest_2_tuning = iforest_2_eval.fit(np.array(X_train2), X_labels)
 iforest_2 = iforest_2_tuning.best_estimator_
 score_iforest2 = iforest_2_tuning.cv_results_
 
 iforest_3_eval = RandomizedSearchCV(iforest_3, grid, cv = cv, verbose = 4, random_state=0,\
-     scoring = sc, n_iter = 10, refit="PR_AUC_score", n_jobs=2)
+     scoring = sc, n_iter = 10, refit="F1", n_jobs=2)
 iforest_3_tuning = iforest_3_eval.fit(np.array(X_train3), X_labels)
 iforest_3 = iforest_3_tuning.best_estimator_
 score_iforest3 = iforest_3_tuning.cv_results_
@@ -101,3 +101,7 @@ score_iforest3 = iforest_3_tuning.cv_results_
 joblib.dump(iforest_1, 'ML_Models\ML_iforest_1.sav')
 joblib.dump(iforest_2, 'ML_Models\ML_iforest_2.sav')
 joblib.dump(iforest_3, 'ML_Models\ML_iforest_3.sav')
+
+joblib.dump(iforest_1_tuning, 'ML_Models\ML_iforest_1_tuning.pkl')
+joblib.dump(iforest_2_tuning, 'ML_Models\ML_iforest_2_tuning.pkl')
+joblib.dump(iforest_3_tuning, 'ML_Models\ML_iforest_3_tuning.pkl')

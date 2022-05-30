@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd 
-from sklearn.metrics import (confusion_matrix, precision_recall_curve, auc,
-                             roc_curve, recall_score, classification_report, f1_score,
-                             precision_recall_fscore_support, ConfusionMatrixDisplay)
+from sklearn.metrics import confusion_matrix, classification_report
 import joblib
 import sys
 sys.path.append('C:/Users/Marc/Desktop/TFG/R Files/Anomaly Detection for SPC')
@@ -12,23 +10,23 @@ from sklearn.preprocessing import StandardScaler
 #import data and ML Modelss
 TS1 = pd.read_csv("Data/TimeSeries1.csv", index_col = 0)
 TS1_Class = pd.read_csv("Data/TimeSeries1_Classification.csv", index_col = 0)
-TS1_Class = TS1_Class.iloc[1280:1600, 20:60]
+TS1_Class = TS1_Class.iloc[1280:1600, 19:60]
 TS1_Class = np.array(TS1_Class).reshape(TS1_Class.size)
 
 TS1_WE_Class = pd.read_csv("Data/TimeSeries1_WE_Classification.csv", index_col = 0)
-TS1_WE_Class = np.array(TS1_WE_Class.iloc[1280:1600, 20:60])\
-    .reshape(TS1_WE_Class.iloc[1280:1600, 20:60].size)
+TS1_WE_Class = np.array(TS1_WE_Class.iloc[1280:1600, 19:60])\
+    .reshape(TS1_WE_Class.iloc[1280:1600, 19:60].size)
 
 TS1_Nelson_Class = pd.read_csv("Data/TimeSeries1_Nelson_Classification.csv", index_col = 0)
-TS1_Nelson_Class = np.array(TS1_Nelson_Class.iloc[1280:1600, 20:60])\
-    .reshape(TS1_Nelson_Class.iloc[1280:1600, 20:60].size)
+TS1_Nelson_Class = np.array(TS1_Nelson_Class.iloc[1280:1600, 19:60])\
+    .reshape(TS1_Nelson_Class.iloc[1280:1600, 19:60].size)
 
-iforest_1 = joblib.load('ML Models/ML_iforest_1.sav')
-iforest_2 = joblib.load('ML Models/ML_iforest_2.sav')
-iforest_3 = joblib.load('ML Models/ML_iforest_3.sav')
-svm_1 = joblib.load('ML Models/ML_svm_1.sav')
-svm_2 = joblib.load('ML Models/ML_svm_2.sav')
-svm_3 = joblib.load('ML Models/ML_svm_3.sav')
+iforest_1 = joblib.load('ML_Models/ML_iforest_1.sav')
+iforest_2 = joblib.load('ML_Models/ML_iforest_2.sav')
+iforest_3 = joblib.load('ML_Models/ML_iforest_3.sav')
+svm_1 = joblib.load('ML_Models/ML_svm_1.sav')
+svm_2 = joblib.load('ML_Models/ML_svm_2.sav')
+svm_3 = joblib.load('ML_Models/ML_svm_3.sav')
 
 #Pre-processing
 #Standardize data based on first 20 points of chart, which is supposed in control       
@@ -57,8 +55,8 @@ scaler = StandardScaler()
 scaler = scaler.fit(X_test3)
 X_test3 = scaler.transform(X_test3)
 X_test3 = pd.DataFrame(X_test3,\
-     columns = ["last_value", "mean20", "sigma20","mean5", "sigma5", "find_if", "kurtosis",\
-           "dir_change"])
+     columns =  ["last_value", "mean20", "sigma20","mean5", "sigma5", "find_if", "kurtosis",
+     "dir_change", 'wavg', 'slope', 'meancross', 'rdist', 'brange'])
 
 #Split dataset for training
 split= int(4/5 * X_test1.shape[0])
@@ -67,8 +65,7 @@ X_test1 = X_test1.iloc[split:X_test1.size, :]
 X_test2 = X_test2.iloc[split:X_test2.size, :]
 X_test3 = X_test3.iloc[split:X_test3.size, :]
 
-
-#predict from ML Modelss
+#predict from ML Models
 #Predict iForest
 predictions_forest1 = iforest_1.predict(np.array(X_test1))
 predictions_forest1 = np.array((predictions_forest1 == -1)*1)
