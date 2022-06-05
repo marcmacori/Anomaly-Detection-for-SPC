@@ -57,7 +57,7 @@ def rule2(data, CL, STD):
 
     for i in range(len(chunks)):
         if np.sum(chunks[i]<CL) >= 9 or np.sum(chunks[i]>CL) >=9:
-            results[i:i+9] = 1
+            results[i+8] = 1
     return results.astype(int)
 
 def rule3(data, CL, STD):
@@ -80,7 +80,7 @@ def rule3(data, CL, STD):
                     numdec =  numdec + 1
 
         if numinc>= 5 or numdec>=5:
-            results[i:i+6] = 1
+            results[i+5] = 1
 
     return results.astype(int)
 
@@ -99,7 +99,7 @@ def rule4(data, CL, STD):
                 directionchange = directionchange + 1
 
         if np.sum(directionchange)>= 12:
-            results[i:i+14] = 1
+            results[i+13] = 1
 
     return results.astype(int)
 
@@ -112,9 +112,9 @@ def rule5(data, CL, STD):
 
     for i in range(len(chunks)):
         if np.sum(chunks[i]<(CL - 2/3*STD)) >= 2:
-            results[i:i+3] = chunks[i] < (CL - 2/3*STD)
+            results[i+2] = 1
         elif np.sum(chunks[i]>(CL + 2/3*STD)) >= 2:
-            results[i:i+3] = chunks[i] > CL + 2/3*STD
+            results[i+2] = 1
 
     return results.astype(int)
 
@@ -127,10 +127,9 @@ def rule6(data, CL, STD):
 
     for i in range(len(chunks)):
         if np.sum(chunks[i]<(CL - 1/3*STD)) >= 4:
-            results[i:i+5] = chunks[i] < (CL - 1/3*STD)
+            results[i+4] = 1
         elif np.sum(chunks[i]>(CL + 1/3*STD)) >= 4:
-            results[i:i+5] = chunks[i] > CL + 1/3*STD
-
+            results[i+4] = 1
     return results.astype(int)
 
 def rule7(data, CL, STD):
@@ -141,7 +140,7 @@ def rule7(data, CL, STD):
 
     for i in range(len(chunks)):
         if all((CL - 1/3*STD) < i < (CL + 1/3*STD) for i in chunks[i]):
-            results[i:i+15] = 1
+            results[i+14] = 1
 
     return results.astype(int)
 
@@ -156,7 +155,7 @@ def rule8(data, CL, STD):
         if all(i < (CL - 1/3*STD) or i > (CL + 1/3*STD) for i in chunks[i])\
                 and any(i < (CL - 1/3*STD) for i in chunks[i])\
                 and any(i > (CL + 1/3*STD) for i in chunks[i]):
-                results[i:i+8] = 1
+                results[i+7] = 1
 
     return results.astype(int)
 

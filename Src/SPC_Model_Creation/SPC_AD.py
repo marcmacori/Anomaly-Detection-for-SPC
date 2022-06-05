@@ -7,12 +7,14 @@ import SPC_AD_library as sp
 TS = pd.read_csv('Data\TimeSeries1.csv', index_col = 0)
 
 #automate data implementation
-def AD_in_data(data, numTS, numnorm, rules):
-    a = []
+def AD_in_data(data, numTS, numnorm, rules, time_steps):
+    c = []
     data = np.array(data)
 
     for i in range(numTS):
         
+        a = []
+
         X, R, MR = sp.analyze(data[i, 0:numnorm])
 
         CL = X[0]
@@ -20,16 +22,25 @@ def AD_in_data(data, numTS, numnorm, rules):
         LCLr = R[0]
         UCLr = R[1]
 
-        b = sp.apply_rules(data[i, :], sp.analyze(data[i, :])[2], CL, STD, LCLr, UCLr, rules)
+        for l in range(data.shape[1] - time_steps+1):
+            
+            v = data[i, l:(l + time_steps)]
+            b = sp.apply_rules(v, sp.analyze(v)[2], CL, STD, LCLr, UCLr, rules)
+            if any(b==1):
+                a.append(1)
+            else:
+                a.append(0)
+        
+        c.append(a)
 
-        a.append(b)
+    c=np.array(c).reshape(numTS, data.shape[1] - time_steps+1)
 
-    return(a)
+    return(c)
 
-anomalies = AD_in_data(TS, len(TS), 20, "Nelson")
+anomalies = AD_in_data(TS, len(TS), 20, "Nelson", 20)
 anomalies = pd.DataFrame(anomalies)
 anomalies.to_csv("Data\TimeSeries1_Nelson_Classification.csv")
 
-anomalies = AD_in_data(TS, len(TS), 20, "WE")
+anomalies = AD_in_data(TS, len(TS), 20, "WE",20)
 anomalies = pd.DataFrame(anomalies)
 anomalies.to_csv("Data\TimeSeries1_WE_Classification.csv")
