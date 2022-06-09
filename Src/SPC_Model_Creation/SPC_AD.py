@@ -33,7 +33,7 @@ def AD_in_data(data, numTS, numnorm, rules, time_steps):
         
         c.append(a)
 
-    c=np.array(c).reshape(numTS, data.shape[1] - time_steps+1)
+    c=np.array(c)
 
     return(c)
 

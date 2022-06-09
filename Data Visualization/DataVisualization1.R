@@ -48,7 +48,7 @@ plot_series <- function(Data, Class, V)
                            name = "Classification",
                            labels = c("IC", "OOC"))+
         theme_classic()+
-        labs(y = "QC", x = "Obeservation Number")+
+        labs(y = "QC", x = "Observation Number")+
         theme(text = element_text(size=8))+
         coord_cartesian(xlim = c(0, 60), ylim = c(5, 15))
       })
