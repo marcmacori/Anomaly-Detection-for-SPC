@@ -57,10 +57,7 @@ grid = {'bootstrap': bootstrap,
                 'contamination': contamination,
                 'max_features': max_features,
                 'max_samples': max_samples,
-                'n_estimators': n_estimators,
-                'random_state': [0,42],
-                'warm_start':[False, True],
-                'n_jobs': n_jobs}
+                'n_estimators': n_estimators}
 
 cv = KFold(n_splits = 5, shuffle=True,  random_state = 123)
 sc = {"PR_AUC_score": make_scorer(average_precision_score), "Precision": make_scorer(precision_score),\
