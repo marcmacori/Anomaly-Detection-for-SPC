@@ -1,7 +1,9 @@
 # Synthetic Data Creator in Python
 import numpy as np
 import pandas as pd 
-from DataCreation import *
+import os
+os.chdir(r'C:/Users/Marc/Desktop/TFG/R Files/Anomaly Detection for SPC')
+from Data_Creation.DataCreation  import *
 # Creating Dataset number 2. A multifeature dataset, with 10000 points and anomalies
 # starting from point 2000. Each point is labeled as an anomaly or not in a 
 # correspoinding vector with the same logic as above
@@ -55,4 +57,4 @@ i, j = DataSet2Creation(10000)
 # Creating a dataframe and saving .csv
 Df2= pd.DataFrame({"F1":a, "F2":c, "F3":e, "F4":g, "F5":i,\
     "LabelF1":b, "LabelF2":d, "LabelF3":f, "LabelF4":h, "LabelF5":j})
-Df2.to_csv('Data\TimeSeries2.csv')
+Df2.to_csv('RandomExperiments\TimeSeries2.csv')
