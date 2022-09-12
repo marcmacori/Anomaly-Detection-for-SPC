@@ -100,3 +100,5 @@ p13 <- c(plot_series(TS1, WE_TS1_Class, V1),
          plot_series(TS1, NE_TS1_Class, V8))
 
 Data13 <- wrap_plots(p12, ncol = 4) + plot_layout(guides = "collect")
+
+
